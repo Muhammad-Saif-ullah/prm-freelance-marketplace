@@ -4,6 +4,9 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
 
+import authRoutes from './routes/authRouter.js'
+import conn from './db/conn.js'
+
 const app = express()
 
 const limiter = rateLimit({
@@ -12,6 +15,15 @@ const limiter = rateLimit({
 });
 
 [helmet(), cors(), morgan('combined'), express.json({ limit: '10mb' }), limiter].forEach(middleware => app.use(middleware))
+
+app.use('/api/v1/auth', authRoutes);
+
+conn.then(() => console.log('✅ Database connected'))
+  .catch(err => {
+    console.error('🔴 Database connection error:', err);
+    process.exit(1);
+  });
+
 
 app.get('/', (req, res) => {
   res.json({ 

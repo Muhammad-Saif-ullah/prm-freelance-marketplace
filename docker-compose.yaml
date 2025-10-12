@@ -6,8 +6,7 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./client:/app
-      - /app/node_modules
+      - ./client/src:/app/src
     environment:
       - VITE_API_URL=http://localhost:3000
     develop:
@@ -32,7 +31,6 @@ services:
       - "3000:3000"
     volumes:
       - ./server:/app
-      - /app/node_modules
     environment:
       - DATABASE_URL=mongodb://mongo:27017/prm-freelance-db
     develop:
