@@ -14,7 +14,14 @@ const limiter = rateLimit({
   max: 100 
 });
 
-[helmet(), cors(), morgan('combined'), express.json({ limit: '10mb' }), limiter].forEach(middleware => app.use(middleware))
+const corOptions = {
+  origin: ['http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+[helmet(), cors(corOptions), morgan('combined'), express.json({ limit: '10mb' }), limiter].forEach(middleware => app.use(middleware))
 
 app.use('/api/v1/auth', authRoutes);
 

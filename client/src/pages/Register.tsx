@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
@@ -8,6 +9,7 @@ const Register: React.FC = () => {
     const [role, setRole] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ const Register: React.FC = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem("token", data.token);
+        dispatch({ type: "user/setUser", payload: data.user });
         navigate("/");
       } else {
         setError(data.message);
